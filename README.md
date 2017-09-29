@@ -63,7 +63,7 @@ If you have any questions, [post in the Snapcraft forum](https://forum.snapcraft
 
 ## The Snapcrafters
 
-| [![Leo Arias](https://avatars3.githubusercontent.com/u/617831?v=4&s=460)](https://github.com/elopio/) |
+| [![Leo Arias](https://avatars3.githubusercontent.com/u/617831?v=4&s=128)](https://github.com/elopio/) |
 | :---: |
 | [Leo Arias](https://github.com/elopio/) |
 
