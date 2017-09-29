@@ -46,7 +46,7 @@ upstream so [Project] can authoritatively publish future releases.
   - [x] Publish the confined snap in the Snap store beta channel
   - [x] Update the install instructions in this `README.md`
   - [x] Post a call for testing on the [Snapcraft Forum](https://forum.snapcraft.io) - [link](https://forum.snapcraft.io/t/call-for-testing-vault/497)
-  - [ ] Ask a [Snapcrafters admin](https://github.com/orgs/snapcrafters/people?query=%20role%3Aowner) to fork your repo into github.com/snapcrafters, transfer the snap name from you to snapcrafters, and configure the repo for automatic publishing into edge on commit
+  - [x] Ask a [Snapcrafters admin](https://github.com/orgs/snapcrafters/people?query=%20role%3Aowner) to fork your repo into github.com/snapcrafters, transfer the snap name from you to snapcrafters, and configure the repo for automatic publishing into edge on commit
   - [ ] Add the provided Snapcraft build badge to this `README.md`
   - [ ] Publish the snap in the Snap store stable channel
   - [ ] Update the install instructions in this `README.md`
