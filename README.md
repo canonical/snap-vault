@@ -49,8 +49,11 @@ upstream so [Project] can authoritatively publish future releases.
   - [x] Publish the snap in the Snap store stable channel
   - [x] Update the install instructions in this `README.md`
   - [ ] Post an announcement in the [Snapcraft Forum](https://forum.snapcraft.io) - [link]()
-  - [ ] Submit a pull request or patch upstream that adds snap install documentation - [link]()
-  - [ ] Submit a pull request or patch upstream that adds the `snapcraft.yaml` and any required assets/launchers - [link]()
+  
+  :x: Submit a pull request or patch upstream that adds snap install documentation - [link](https://github.com/hashicorp/vault/pull/3555)
+  
+  :x: Submit a pull request or patch upstream that adds the `snapcraft.yaml` and any required assets/launchers - [link](https://github.com/hashicorp/vault/pull/1816)
+  
   - [ ] Add upstream contact information to the `README.md`
   - If upstream accept the PR:
     - [ ] Request upstream create a Snap store account
