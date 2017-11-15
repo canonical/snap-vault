@@ -1,5 +1,6 @@
 name: vault
 version: master
+version-script: git -C parts/vault/build describe --dirty
 summary: Vault is a tool for securely accessing secrets.
 description: |
   A modern system requires access to a multitude of secrets: database
@@ -20,7 +21,19 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
-    source-tag: master
+    prepare: |
+      last_committed_tag="$(git describe --tags --abbrev=0)"
+      last_released_tag="$(snap info vault | awk '$1 == "beta:" { print $2 }')"
+      # If the latest tag from the upstream project has not been released to
+      # beta, build that tag instead of master.
+      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
+        git checkout "${last_committed_tag}"
+        # XXX The snapcraft go plugin builds a link to the src dir, not to the
+        # build dir. That might be a bug, but let's better checkout both to be
+        # safe that we are not building the wrong thing. --elopio - 20171108
+        cd ../src
+        git checkout "${last_committed_tag}"
+      fi
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags: [vault]
