@@ -1,6 +1,6 @@
 name: vault
 version: master
-version-script: git -C parts/vault/build describe --dirty
+version-script: git -C parts/vault/build describe --dirty | sed "s/v//g"
 summary: Vault is a tool for securely accessing secrets.
 description: |
   A modern system requires access to a multitude of secrets: database
@@ -40,4 +40,4 @@ parts:
     build-packages: [git, g++, libsasl2-dev]
     after: [go]
   go:
-    source-tag: go1.9
+    source-tag: go1.10.1
