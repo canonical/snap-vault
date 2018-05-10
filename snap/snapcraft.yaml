@@ -21,7 +21,7 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
-    prepare: |
+    override-build: |
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info vault | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
@@ -34,6 +34,7 @@ parts:
         cd ../src
         git checkout "${last_committed_tag}"
       fi
+      snapcraftctl build
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags: [vault]
