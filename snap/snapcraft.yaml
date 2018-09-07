@@ -34,11 +34,19 @@ parts:
         cd ../src
         git checkout "${last_committed_tag}"
       fi
+      git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
       snapcraftctl build
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags: [vault]
     build-packages: [git, g++, libsasl2-dev]
-    after: [go]
+    after:
+      - go
+      - patches
   go:
     source-tag: go1.10.1
+  patches:
+    source: snap/patches
+    plugin: dump
+    prime:
+      - -*

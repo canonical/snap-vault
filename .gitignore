@@ -2,3 +2,5 @@
 parts
 stage
 prime
+vault*.snap
+snap/.snapcraft
