@@ -16,7 +16,7 @@ confinement: strict
 apps:
   vault:
     command: bin/vault
-    plugs: [network, network-bind]
+    plugs: [network, network-bind, home]
 
 parts:
   vault:
