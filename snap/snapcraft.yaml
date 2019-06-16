@@ -9,6 +9,7 @@ description: |
   is already very difficult and platform-specific. Adding on key rolling,
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
+base: core18
 
 grade: stable
 confinement: strict
@@ -21,7 +22,8 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
-    override-build: |
+    override-pull: |
+      snapcraftctl pull
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info vault | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
@@ -35,7 +37,6 @@ parts:
         git checkout "${last_committed_tag}"
       fi
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
-      snapcraftctl build
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags: [vault]
@@ -44,6 +45,18 @@ parts:
       - go
       - patches
   go:
+    override-build: cd src && env GOROOT_BOOTSTRAP=$(go env GOROOT | tr -d '\n') ./make.bash
+    build-packages:
+      - golang-go
+      - g++
+    override-install: cp -R * $SNAPCRAFT_PART_INSTALL
+    plugin: nil
+    prime:
+      - -*
+    source: https://go.googlesource.com/go
+    source-type: git
+    stage:
+      - bin
     source-tag: go1.10.1
   patches:
     source: snap/patches
