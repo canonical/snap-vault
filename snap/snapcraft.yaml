@@ -1,6 +1,4 @@
 name: vault
-version: master
-version-script: git -C parts/vault/build describe --dirty | sed "s/v//g"
 summary: Vault is a tool for securely accessing secrets.
 description: |
   A modern system requires access to a multitude of secrets: database
@@ -13,11 +11,15 @@ base: core18
 
 grade: stable
 confinement: strict
+adopt-info: vault
 
 apps:
   vault:
     command: bin/vault
-    plugs: [network, network-bind, home]
+    plugs:
+      - network
+      - network-bind
+      - home
 
 parts:
   vault:
@@ -37,29 +39,20 @@ parts:
         git checkout "${last_committed_tag}"
       fi
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
+      snapcraftctl set-version `echo ${last_committed_tag} | sed "s/v//g"`
     plugin: go
     go-importpath: github.com/hashicorp/vault
-    go-buildtags: [vault]
-    build-packages: [git, g++, libsasl2-dev]
-    after:
-      - go
-      - patches
-  go:
-    override-build: cd src && env GOROOT_BOOTSTRAP=$(go env GOROOT | tr -d '\n') ./make.bash
+    go-buildtags:
+      - vault
+    go-channel: 1.10/stable
     build-packages:
-      - golang-go
+      - git
       - g++
-    override-install: cp -R * $SNAPCRAFT_PART_INSTALL
-    plugin: nil
-    prime:
-      - -*
-    source: https://go.googlesource.com/go
-    source-type: git
-    stage:
-      - bin
-    source-tag: go1.10.1
+      - libsasl2-dev
+    after:
+      - patches
   patches:
-    source: snap/patches
+    source: ./snap/local/patches
     plugin: dump
     prime:
       - -*
