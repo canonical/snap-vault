@@ -39,6 +39,7 @@ parts:
         git checkout "${last_committed_tag}"
       fi
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
+      git apply $SNAPCRAFT_STAGE/ubuntu-fan.patch
       snapcraftctl set-version `echo ${last_committed_tag} | sed "s/v//g"`
     plugin: go
     go-importpath: github.com/hashicorp/vault

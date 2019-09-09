@@ -1,0 +1,24 @@
+From fdfe9bbad8c1e7fc9f84fda02ec8a0383b2f0f25 Mon Sep 17 00:00:00 2001
+From: Doug Parrish <dparrish@ceeness.com>
+Date: Thu, 22 Aug 2019 13:23:03 -0600
+Subject: [PATCH] Fixes #345 - Add accommodation for IPv4 240/8-255/8 to URLIP
+ regexp in patterns.go
+
+Signed-off-by: Doug Parrish <dparrish@ceeness.com>
+---
+ patterns.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vendor/github.com/asaskevich/govalidator/patterns.go b/vendor/github.com/asaskevich/govalidator/patterns.go
+index 61a05d4..e3e8286 100644
+--- a/vendor/github.com/asaskevich/govalidator/patterns.go
++++ b/vendor/github.com/asaskevich/govalidator/patterns.go
+@@ -35,7 +35,7 @@ const (
+     URLUsername       string = `(\S+(:\S*)?@)`
+     URLPath           string = `((\/|\?|#)[^\s]*)`
+     URLPort           string = `(:(\d{1,5}))`
+-    URLIP             string = `([1-9]\d?|1\d\d|2[01]\d|22[0-3])(\.(1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.([0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))`
++    URLIP             string = `([1-9]\d?|1\d\d|2[01]\d|22[0-3]|24\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){2}(?:\.([0-9]\d?|1\d\d|2[0-4]\d|25[0-5]))`
+ 	  URLSubdomain      string = `((www\.)|([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])*[a-zA-Z0-9]\.[a-zA-Z0-9]+))`  
+     URL               string = `^` + URLSchema + `?` + URLUsername + `?` + `((` + URLIP + `|(\[` + IP + `\])|(([a-zA-Z0-9]([a-zA-Z0-9-_]+)?[a-zA-Z0-9]([-\.][a-zA-Z0-9]+)*)|(` + URLSubdomain + `?))?(([a-zA-Z\x{00a1}-\x{ffff}0-9]+-?-?)*[a-zA-Z\x{00a1}-\x{ffff}0-9]+)(?:\.([a-zA-Z\x{00a1}-\x{ffff}]{1,}))?))\.?` + URLPort + `?` + URLPath + `?$`
+     SSN               string = `^\d{3}[- ]?\d{2}[- ]?\d{4}$`
