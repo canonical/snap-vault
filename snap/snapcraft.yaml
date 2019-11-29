@@ -26,7 +26,7 @@ parts:
     source: https://github.com/hashicorp/vault.git
     override-pull: |
       snapcraftctl pull
-      git checkout --track origin/release/1.2.x
+      git checkout --track origin/release/1.3.x
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info vault | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
