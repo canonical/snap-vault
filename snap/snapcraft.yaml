@@ -46,7 +46,7 @@ parts:
     go-importpath: github.com/hashicorp/vault
     go-buildtags:
       - vault
-    go-channel: 1.12/stable
+    go-channel: 1.13/stable
     build-packages:
       - git
       - g++
