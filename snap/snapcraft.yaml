@@ -24,23 +24,14 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
+    source-tag: v1.1.5
     override-pull: |
       snapcraftctl pull
-      last_committed_tag="$(git tag | grep "v1.1" | sort | tail -1)"
-      last_released_tag="$(snap info vault | awk '$1 == "beta:" { print $2 }')"
-      # If the latest tag from the upstream project has not been released to
-      # beta, build that tag instead of master.
-      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
-        git checkout "${last_committed_tag}"
-        # XXX The snapcraft go plugin builds a link to the src dir, not to the
-        # build dir. That might be a bug, but let's better checkout both to be
-        # safe that we are not building the wrong thing. --elopio - 20171108
-        cd ../src
-        git checkout "${last_committed_tag}"
-      fi
+      release_tag="$(git tag -l --sort=version:refname "v1.1.*" | tail -1)"
+      git checkout "${release_tag}"
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
       git apply $SNAPCRAFT_STAGE/ubuntu-fan.patch
-      snapcraftctl set-version `echo ${last_committed_tag} | sed "s/v//g"`
+      snapcraftctl set-version `echo ${release_tag} | sed "s/v//g"`
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags:
