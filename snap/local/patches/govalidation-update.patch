@@ -1,0 +1,39 @@
+From 5533839e0aed7d1277b8caed24d28fb267da8ee1 Mon Sep 17 00:00:00 2001
+From: James Page <james.page@ubuntu.com>
+Date: Wed, 5 Jan 2022 11:50:17 +0000
+Subject: [PATCH] Bump govalidator version
+
+---
+ go.mod | 2 +-
+ go.sum | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/go.mod b/go.mod
+index 9bc199879..1aa2e5cdd 100644
+--- a/go.mod
++++ b/go.mod
+@@ -25,7 +25,7 @@ require (
+ 	github.com/armon/go-metrics v0.3.7
+ 	github.com/armon/go-proxyproto v0.0.0-20210323213023-7e956b284f0a
+ 	github.com/armon/go-radix v1.0.0
+-	github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
++	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
+ 	github.com/aws/aws-sdk-go v1.37.19
+ 	github.com/bitly/go-hostpool v0.1.0 // indirect
+ 	github.com/cenkalti/backoff/v3 v3.0.0
+diff --git a/go.sum b/go.sum
+index 0a9c5946f..dba9b11b3 100644
+--- a/go.sum
++++ b/go.sum
+@@ -179,6 +179,8 @@ github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgI
+ github.com/aryann/difflib v0.0.0-20170710044230-e206f873d14a/go.mod h1:DAHtR1m6lCRdSC2Tm3DSWRPvIPr6xNKyeHdqDQSQT+A=
+ github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf h1:eg0MeVzsP1G42dRafH3vf+al2vQIJU0YHX+1Tw87oco=
+ github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf/go.mod h1:lB+ZfQJz7igIIfQNfa7Ml4HSf2uFQQRzpGGRXenZAgY=
++github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d h1:Byv0BzEl3/e6D5CLfI0j/7hiIEtvGVFPCZ7Ei2oq8iQ=
++github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d/go.mod h1:WaHUgvxTVq04UNunO+XhnAqY/wQc+bxr74GqbsZ/Jqw=
+ github.com/aws/aws-lambda-go v1.13.3/go.mod h1:4UKl9IzQMoD+QF79YdCuzCwp8VbmG4VAQwij/eHl5CU=
+ github.com/aws/aws-sdk-go v1.25.41/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
+ github.com/aws/aws-sdk-go v1.27.0/go.mod h1:KmX6BPdI08NWTb3/sm4ZGu5ShLoqVDhKgpiN924inxo=
+-- 
+2.33.1
+

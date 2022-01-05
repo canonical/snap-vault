@@ -17,7 +17,7 @@ index 94e617997..c03698582 100644
 +		if hasSkip {
 +			skip, err := strconv.ParseBool(sskip)
 +			if err != nil {
-+				return nil, errwrap.Wrapf(fmt.Sprintf("value of 'tls_insecure_skip_verify' (%v) could not be understood: {{err}}", sskip), err)
++				return nil, fmt.Errorf("value of 'tls_insecure_skip_verify' (%v) could not be understood", sskip)
 +			}
 +			tls.InsecureSkipVerify = skip
 +		} else {
