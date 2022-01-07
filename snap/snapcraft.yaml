@@ -24,7 +24,6 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
-    source-branch: release/1.6.x
     override-pull: |
       set -x
       snapcraftctl pull
@@ -34,6 +33,7 @@ parts:
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
       git apply $SNAPCRAFT_STAGE/ubuntu-fan.patch
       snapcraftctl set-version `echo ${release_tag} | sed "s/v//g"`
+      go mod download -x
     plugin: go
     go-importpath: github.com/hashicorp/vault
     go-buildtags:
