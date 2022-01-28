@@ -1,7 +1,7 @@
-From 5533839e0aed7d1277b8caed24d28fb267da8ee1 Mon Sep 17 00:00:00 2001
+From 89ea5f8a677f1d73779867e611fa4dad9b3b7dcf Mon Sep 17 00:00:00 2001
 From: James Page <james.page@ubuntu.com>
-Date: Wed, 5 Jan 2022 11:50:17 +0000
-Subject: [PATCH] Bump govalidator version
+Date: Fri, 28 Jan 2022 09:34:04 +0000
+Subject: [PATCH] Bump govalidator versions
 
 ---
  go.mod | 2 +-
@@ -9,11 +9,11 @@ Subject: [PATCH] Bump govalidator version
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/go.mod b/go.mod
-index 9bc199879..1aa2e5cdd 100644
+index d60752d72..fe3a5bc68 100644
 --- a/go.mod
 +++ b/go.mod
 @@ -25,7 +25,7 @@ require (
- 	github.com/armon/go-metrics v0.3.7
+ 	github.com/armon/go-metrics v0.3.10
  	github.com/armon/go-proxyproto v0.0.0-20210323213023-7e956b284f0a
  	github.com/armon/go-radix v1.0.0
 -	github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
@@ -22,7 +22,7 @@ index 9bc199879..1aa2e5cdd 100644
  	github.com/bitly/go-hostpool v0.1.0 // indirect
  	github.com/cenkalti/backoff/v3 v3.0.0
 diff --git a/go.sum b/go.sum
-index 0a9c5946f..dba9b11b3 100644
+index e03c1d45b..0ee11dffe 100644
 --- a/go.sum
 +++ b/go.sum
 @@ -179,6 +179,8 @@ github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgI
