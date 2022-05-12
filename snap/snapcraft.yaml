@@ -27,7 +27,7 @@ parts:
     override-pull: |
       set -x
       snapcraftctl pull
-      release_tag="$(git tag -l --sort=version:refname "v1.9.*" | tail -1)"
+      release_tag="$(git tag -l --sort=version:refname "v1.10.*" | tail -1)"
       # If the latest tag from the upstream project has not been released to
       git checkout "${release_tag}"
       git apply $SNAPCRAFT_STAGE/etcd_export_tls_no_verify.patch
