@@ -36,13 +36,30 @@ parts:
     plugin: go
     go-buildtags:
       - vault
+      - ui
     go-channel: 1.17/stable
     build-packages:
       - git
       - g++
       - libsasl2-dev
+      - curl
+      - gnupg
     after:
       - patches
+    override-build: |
+      # Install nodejs 14
+      REPO="https://deb.nodesource.com/node_14.x"
+      echo "deb $REPO focal main" > /etc/apt/sources.list.d/nodesource.list
+      curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | apt-key add -
+      # Install yarn
+      echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+      curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+      apt-get update
+      apt-get install -y nodejs yarn=1.19.1-1
+      # Build the WebUI assets
+      make static-dist
+      # Complete the main go build
+      snapcraftctl build
   patches:
     source: ./snap/local/patches
     plugin: dump
