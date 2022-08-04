@@ -7,7 +7,7 @@ description: |
   is already very difficult and platform-specific. Adding on key rolling,
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
-base: core18
+base: core20
 
 grade: stable
 confinement: strict
@@ -34,7 +34,6 @@ parts:
       snapcraftctl set-version `echo ${release_tag} | sed "s/v//g"`
       go mod download -x
     plugin: go
-    go-importpath: github.com/hashicorp/vault
     go-buildtags:
       - vault
     go-channel: 1.17/stable
