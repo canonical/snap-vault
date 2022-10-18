@@ -29,7 +29,7 @@ parts:
       echo ----------
       env | grep CRAFT
       echo ----------
-      release_tag="$(git tag -l --sort=version:refname "v1.11.*" | tail -1)"
+      release_tag="$(git tag -l --sort=version:refname "v1.12.*" | grep -v rc | tail -1)"
       # If the latest tag from the upstream project has not been released to
       git checkout "${release_tag}"
       git apply $CRAFT_PROJECT_DIR/snap/local/patches/etcd_export_tls_no_verify.patch
@@ -40,7 +40,7 @@ parts:
       - vault
       - ui
     build-snaps:
-      - go/1.17/stable
+      - go/1.19/stable
     build-packages:
       - git
       - g++
