@@ -8,7 +8,9 @@
 distributions.</p>
 
 <p align="center">
-[![vault](https://snapcraft.io/vault/badge.svg)](https://snapcraft.io/vault)
+<a href="https://snapcraft.io/vault">
+  <img alt="vault" src="https://snapcraft.io/vault/badge.svg" />
+</a>
 </p>
 
 ## Install
