@@ -1,3 +1,7 @@
+<a href="https://snapcraft.io/vault">
+  <img alt="vault" src="https://snapcraft.io/vault/badge.svg" />
+</a>
+
 <h1 align="center">
   <img src="https://cloud.githubusercontent.com/assets/416727/24112835/03b57de4-0d58-11e7-81f5-9056cac5b427.png" alt="Vault">
   <br />
@@ -6,12 +10,6 @@
 
 <p align="center"><b>This is the snap for Vault</b>, <i>"A tool for securely accessing secrets"</i>. It works on Ubuntu, Fedora, Debian, and other major Linux
 distributions.</p>
-
-<p align="center">
-<a href="https://snapcraft.io/vault">
-  <img alt="vault" src="https://snapcraft.io/vault/badge.svg" />
-</a>
-</p>
 
 ## Install
 
