@@ -8,10 +8,10 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core22
+version: 1.12.1
 
 grade: stable
 confinement: strict
-adopt-info: vault
 
 apps:
   vault:
@@ -24,16 +24,13 @@ apps:
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
+    source-tag: "v$SNAPCRAFT_PROJECT_VERSION"
     override-pull: |
       craftctl default
       echo ----------
       env | grep CRAFT
       echo ----------
-      release_tag="$(git tag -l --sort=version:refname "v1.12.*" | grep -v rc | tail -1)"
-      # If the latest tag from the upstream project has not been released to
-      git checkout "${release_tag}"
       git apply $CRAFT_PROJECT_DIR/snap/local/patches/etcd_export_tls_no_verify.patch
-      craftctl set version=`echo ${release_tag} | sed "s/v//g"`
       go mod download -x
     plugin: go
     go-buildtags:

@@ -1,0 +1,83 @@
+name: Auto Update
+on:
+  # Manual trigger
+  workflow_dispatch:
+  # Check regularly the upstream every four hours
+  schedule:
+    - cron: "0 0,4,8,12,16,20 * * *"
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{steps.check.outputs.release}}
+    steps:
+      # Get the latest release of hashicorp/vault in format 'vX.X.X'
+      - id: latest-upstream
+        uses: pozetroninc/github-action-get-latest-release@v0.5.0
+        with:
+          repository: hashicorp/vault
+          excludes: draft
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install yq
+        run: sudo snap install yq --channel=v4/stable
+
+      - id: check
+        name: Check for new releases
+        run: |
+          LATEST="${{ steps.latest-upstream.outputs.release }}"
+
+          # Get the current version from the repo
+          CURRENT="$(cat snap/snapcraft.yaml| yq e '.version' -)"
+
+          if [[ "$CURRENT" != "$LATEST" ]]; then
+            echo "::set-output name=release::${LATEST}"
+            echo "New upstream release '$LATEST' found"
+          else
+            echo "No new upstream release found"
+          fi
+
+  create-pr:
+    runs-on: ubuntu-latest
+    needs: check-upstream
+    if: ${{ needs.check-upstream.outputs.release != '' }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install yq
+        run: sudo snap install yq --channel=v4/stable
+
+      - name: Update snapcraft.yaml
+        run: |
+          # Grab the output from the last job
+          LATEST="${{ needs.check-upstream.outputs.release }}"
+          # Get the current version from the repo
+          CURRENT="$(cat snap/snapcraft.yaml| yq e '.version' -)"
+          # Update the snapcraft.yaml (strip the leading 'v' from the LATEST version)
+          sed -i "s/^version: \"$CURRENT\"/version: \"${LATEST/v/}\"/g" snap/snapcraft.yaml
+
+      # We use a Github App and token to allow Github Actions to run properly on the created PR.
+      - uses: tibdex/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_KEY }}
+
+      - name: Create a PR for local changes
+        uses: peter-evans/create-pull-request@v4
+        id: cpr
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          commit-message: "Bump snap version to ${{ needs.check-upstream.outputs.release }}"
+          committer: "Github Actions <github-actions@github.com>"
+          author: "Github Actions <github-actions@github.com>"
+          title: "Update to Terraform ${{ needs.check-upstream.outputs.release }}"
+          body: Automated update to follow upstream [release](https://github.com/hashicorp/vault/releases/tag/${{ needs.check-upstream.outputs.release }}) of Vault ${{ needs.check-upstream.outputs.release }}.
+          branch: "auto-${{ needs.check-upstream.outputs.release }}"
+          delete-branch: true
+          reviewers: javacruft
+          assignees: javacruft
