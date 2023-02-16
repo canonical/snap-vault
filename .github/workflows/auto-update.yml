@@ -60,18 +60,11 @@ jobs:
           # Update the snapcraft.yaml (strip the leading 'v' from the LATEST version)
           sed -i "s/^version: \"$CURRENT\"/version: \"${LATEST/v/}\"/g" snap/snapcraft.yaml
 
-      # We use a Github App and token to allow Github Actions to run properly on the created PR.
-      - uses: tibdex/github-app-token@v1
-        id: generate-token
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_KEY }}
-
       - name: Create a PR for local changes
         uses: peter-evans/create-pull-request@v4
         id: cpr
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Bump snap version to ${{ needs.check-upstream.outputs.release }}"
           committer: "Github Actions <github-actions@github.com>"
           author: "Github Actions <github-actions@github.com>"
@@ -79,5 +72,3 @@ jobs:
           body: Automated update to follow upstream [release](https://github.com/hashicorp/vault/releases/tag/${{ needs.check-upstream.outputs.release }}) of Vault ${{ needs.check-upstream.outputs.release }}.
           branch: "auto-${{ needs.check-upstream.outputs.release }}"
           delete-branch: true
-          reviewers: javacruft
-          assignees: javacruft
