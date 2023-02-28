@@ -6,18 +6,21 @@ on:
   schedule:
     - cron: "0 0,4,8,12,16,20 * * *"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   check-upstream:
     runs-on: ubuntu-latest
     outputs:
       release: ${{steps.check.outputs.release}}
     steps:
-      # Get the latest release of hashicorp/vault in format 'vX.X.X'
       - id: latest-upstream
-        uses: pozetroninc/github-action-get-latest-release@v0.5.0
+        uses: pozetroninc/github-action-get-latest-release@v0.6.0
         with:
           repository: hashicorp/vault
-          excludes: draft
+          excludes: prerelease, draft
 
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -61,14 +64,14 @@ jobs:
           sed -i "s/^version: \"$CURRENT\"/version: \"${LATEST/v/}\"/g" snap/snapcraft.yaml
 
       - name: Create a PR for local changes
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v4.2.3
         id: cpr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Bump snap version to ${{ needs.check-upstream.outputs.release }}"
           committer: "Github Actions <github-actions@github.com>"
           author: "Github Actions <github-actions@github.com>"
-          title: "Update to Terraform ${{ needs.check-upstream.outputs.release }}"
+          title: "Update to Vault ${{ needs.check-upstream.outputs.release }}"
           body: Automated update to follow upstream [release](https://github.com/hashicorp/vault/releases/tag/${{ needs.check-upstream.outputs.release }}) of Vault ${{ needs.check-upstream.outputs.release }}.
-          branch: "auto-${{ needs.check-upstream.outputs.release }}"
+          branch: "chore/bump-version-to-${{ needs.check-upstream.outputs.release }}"
           delete-branch: true
