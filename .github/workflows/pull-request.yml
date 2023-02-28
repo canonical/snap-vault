@@ -1,6 +1,6 @@
 name: Commits
 on:
-  - pull_request
+  pull_request:
 
 jobs:
   build-and-test:
