@@ -55,6 +55,7 @@ jobs:
         run: sudo snap install yq --channel=v4/stable
 
       - name: Update snapcraft.yaml
+        shell: bash
         run: |
           # Grab the output from the last job
           LATEST="${{ needs.check-upstream.outputs.release }}"
@@ -62,6 +63,8 @@ jobs:
           CURRENT="$(cat snap/snapcraft.yaml| yq e '.version' -)"
           # Update the snapcraft.yaml (strip the leading 'v' from the LATEST version)
           sed -i "s/^version: \"$CURRENT\"/version: \"${LATEST/v/}\"/g" snap/snapcraft.yaml
+          # Display diff output
+          git diff
 
       - name: Create a PR for local changes
         uses: peter-evans/create-pull-request@v4.2.3
