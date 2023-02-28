@@ -62,9 +62,7 @@ jobs:
           # Get the current version from the repo
           CURRENT="$(cat snap/snapcraft.yaml| yq e '.version' -)"
           # Update the snapcraft.yaml (strip the leading 'v' from the LATEST version)
-          sed -i "s/^version: \"$CURRENT\"/version: \"${LATEST/v/}\"/g" snap/snapcraft.yaml
-          # Display diff output
-          git diff
+          sed -i "s/^version: $CURRENT/version: ${LATEST/v/}/g" snap/snapcraft.yaml
 
       - name: Create a PR for local changes
         uses: peter-evans/create-pull-request@v4.2.3
