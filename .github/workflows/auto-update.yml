@@ -17,10 +17,12 @@ jobs:
       release: ${{steps.check.outputs.release}}
     steps:
       - id: latest-upstream
-        uses: pozetroninc/github-action-get-latest-release@v0.6.0
-        with:
-          repository: hashicorp/vault
-          excludes: prerelease, draft
+        name: Check for latest release tag
+        run: |
+          git clone https://github.com/hashicorp/vault
+          cd vault
+          RELEASE_TAG="$(git tag -l --sort=version:refname "v1.12.*" | tail -1)"
+          echo "::set-output name=release::${RELEASE_TAG}"
 
       - name: Checkout repo
         uses: actions/checkout@v3
