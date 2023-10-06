@@ -8,7 +8,7 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core22
-version: 1.12.3
+version: 1.13.0
 
 grade: stable
 confinement: strict
@@ -20,6 +20,17 @@ apps:
       - network
       - network-bind
       - home
+  vaultd:
+    daemon: simple
+    command: bin/vaultd-start
+    refresh-mode: endure
+    reload-command: bin/vaultd-reload
+    stop-command: bin/vaultd-stop
+    restart-condition: on-failure
+    stop-mode: sigterm
+    plugs:
+      - network
+      - network-bind
 
 parts:
   vault:
@@ -65,6 +76,10 @@ parts:
       craftctl default
       # Manually strip binaries
       strip -s $CRAFT_PART_INSTALL/bin/*
+  deps:
+    plugin: dump
+    source: snap-common
+
   patches:
     source: ./snap/local/patches
     plugin: dump
