@@ -21,7 +21,7 @@ jobs:
         run: |
           git clone https://github.com/hashicorp/vault
           cd vault
-          RELEASE_TAG="$(git tag -l --sort=version:refname "v1.12.*" | tail -1)"
+          RELEASE_TAG="$(git tag -l --sort=version:refname "v1.15.*" | tail -1)"
           echo "::set-output name=release::${RELEASE_TAG}"
 
       - name: Checkout repo
@@ -71,10 +71,10 @@ jobs:
         id: cpr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Bump snap version to ${{ needs.check-upstream.outputs.release }}"
+          commit-message: "chore: Bump snap version to ${{ needs.check-upstream.outputs.release }}"
           committer: "Github Actions <github-actions@github.com>"
           author: "Github Actions <github-actions@github.com>"
-          title: "Update to Vault ${{ needs.check-upstream.outputs.release }}"
+          title: "chore: Update to Vault ${{ needs.check-upstream.outputs.release }}"
           body: Automated update to follow upstream [release](https://github.com/hashicorp/vault/releases/tag/${{ needs.check-upstream.outputs.release }}) of Vault ${{ needs.check-upstream.outputs.release }}.
           branch: "chore/bump-version-to-${{ needs.check-upstream.outputs.release }}"
           delete-branch: true
