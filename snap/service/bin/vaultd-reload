@@ -1,0 +1,10 @@
+#!/bin/bash
+# Copyright (C) 2024 Canonical Ltd
+
+set -ex
+
+vault_pid=$(pgrep -x vault)
+
+if [ -n "$vault_pid" ]; then
+    kill -s HUP "$vault_pid"
+fi

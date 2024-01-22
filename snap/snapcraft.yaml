@@ -20,6 +20,18 @@ apps:
       - network
       - network-bind
       - home
+  vaultd:
+    daemon: simple
+    install-mode: disable
+    command: bin/vaultd-start
+    refresh-mode: endure
+    reload-command: bin/vaultd-reload
+    stop-command: bin/vaultd-stop
+    restart-condition: on-failure
+    stop-mode: sigterm
+    plugs:
+      - network
+      - network-bind
 
 package-repositories:
  - type: apt
@@ -58,3 +70,7 @@ parts:
       craftctl default
       # Manually strip binaries
       strip -s $CRAFT_PART_INSTALL/bin/*
+
+  service-files:
+    plugin: dump
+    source: snap/service
