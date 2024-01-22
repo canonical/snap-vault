@@ -1,0 +1,7 @@
+#!/bin/bash
+# Copyright (C) 2024 Canonical Ltd
+
+set -ex
+
+source "$SNAP_COMMON"/vault.env
+"$SNAP"/bin/vault server -config "$SNAP_COMMON"/vault.hcl

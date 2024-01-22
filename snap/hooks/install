@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+# Create Vault config file
+cp "$SNAP/vault.hcl" "$SNAP_COMMON/vault.hcl"
+cp "$SNAP/vault.env" "$SNAP_COMMON/vault.env"

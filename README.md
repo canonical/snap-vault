@@ -17,3 +17,18 @@ distributions.</p>
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
+## Usage
+
+### Service
+
+Edit the configuration file at `/var/snap/vault/common/vault.hcl` and start the service with:
+
+```shell
+sudo snap start vault.vaultd
+```
+
+### Client
+
+```shell
+vault status
+```
