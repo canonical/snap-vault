@@ -33,20 +33,6 @@ apps:
       - network
       - network-bind
 
-package-repositories:
- - type: apt
-   url: https://deb.nodesource.com/node_16.x
-   components: [main]
-   suites: [focal]
-   key-server: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-   key-id: 9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280
- - type: apt
-   url: https://dl.yarnpkg.com/debian/
-   components: [main]
-   suites: [stable]
-   key-server: https://dl.yarnpkg.com/debian/pubkey.gpg
-   key-id: 72ECF46A56B4AD39C907BBB71646B01B86E50310
-
 parts:
   vault:
     source: https://github.com/hashicorp/vault.git
@@ -57,12 +43,20 @@ parts:
       - ui
     build-snaps:
       - go/1.21/stable
-    build-packages:
-      - nodejs
-      - yarn
     override-build: |
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
+           # Install nodejs 14
+          REPO="https://deb.nodesource.com/node_14.x"
+          echo "deb $REPO focal main" > /etc/apt/sources.list.d/nodesource.list
+          curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | apt-key add -
+
+          # Install yarn
+          echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+          curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+          apt-get update
+          apt-get install -y nodejs yarn
+
           # Build the WebUI assets
           make static-dist
       fi
