@@ -37,12 +37,6 @@ parts:
   vault:
     source: https://github.com/hashicorp/vault.git
     source-tag: "v$SNAPCRAFT_PROJECT_VERSION"
-    override-pull: |
-      craftctl default
-      echo ----------
-      env | grep CRAFT
-      echo ----------
-      go mod download -x
     plugin: go
     go-buildtags:
       - vault
@@ -50,7 +44,6 @@ parts:
     build-snaps:
       - go/1.21/stable
     build-packages:
-      - git
       - g++
       - libsasl2-dev
       - curl
@@ -58,15 +51,16 @@ parts:
     override-build: |
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
-          # Install nodejs 14
-          REPO="https://deb.nodesource.com/node_14.x"
+          # Install nodejs 16
+          REPO="https://deb.nodesource.com/node_16.x"
           echo "deb $REPO focal main" > /etc/apt/sources.list.d/nodesource.list
           curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | apt-key add -
-          # Install yarn
-          echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-          curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           apt-get update
-          apt-get install -y nodejs yarn=1.19.1-1
+          apt-get install -y nodejs
+
+          # Install yarn
+          npm install --global yarn
+
           # Build the WebUI assets
           make static-dist
       fi
