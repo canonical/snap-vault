@@ -44,7 +44,11 @@ parts:
     build-snaps:
       - go/1.21/stable
     build-packages:
+      - git
+      - g++
+      - libsasl2-dev
       - curl
+      - gnupg
     override-build: |
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
