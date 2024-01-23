@@ -50,19 +50,18 @@ parts:
       - curl
       - gnupg
     override-build: |
+      go mod download -x
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
-           # Install nodejs 14
+          # Install nodejs 14
           REPO="https://deb.nodesource.com/node_14.x"
           echo "deb $REPO focal main" > /etc/apt/sources.list.d/nodesource.list
           curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | apt-key add -
-
           # Install yarn
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
           curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
           apt-get update
           apt-get install -y nodejs yarn=1.19.1-1
-
           # Build the WebUI assets
           make static-dist
       fi
