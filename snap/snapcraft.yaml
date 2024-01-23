@@ -46,8 +46,8 @@ parts:
     override-build: |
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
-           # Install nodejs 14
-          REPO="https://deb.nodesource.com/node_14.x"
+           # Install nodejs 16
+          REPO="https://deb.nodesource.com/node_16.x"
           echo "deb $REPO focal main" > /etc/apt/sources.list.d/nodesource.list
           curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | apt-key add -
 
