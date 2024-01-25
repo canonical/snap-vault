@@ -18,11 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Build snap locally
-      #   uses: snapcore/action-build@v1
-      #   id: build
+      - name: Build snap locally
+        uses: snapcore/action-build@v1
+        id: build
       
       - name: Get snapcraft track
+        if: ${{ github.ref_protected }}
         id: track
         run: |
           if [ "${{ github.ref_name }}" == "master" ]; then
@@ -35,11 +36,11 @@ jobs:
         run: |
           echo "Track: ${{ steps.track.outputs.track }}"
           
-      # - name: publish snap
-      #   # if: ${{ github.ref_name == 'master' }}
-      #   uses: snapcore/action-publish@v1
-      #   env:
-      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-      #   with:
-      #     snap: ${{ steps.build.outputs.snap }}
-      #     release: ${{ steps.track.outputs.track }}/edge
+      - name: publish snap
+        if: ${{ github.ref_protected }}
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.build.outputs.snap }}
+          release: ${{ steps.track.outputs.track }}/edge
