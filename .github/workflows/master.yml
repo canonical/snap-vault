@@ -27,7 +27,7 @@ jobs:
         id: track
         run: |
           if [ "${{ github.ref_name }}" == "master" ]; then
-            echo "::set-output name=track::master"
+            echo "::set-output name=track::latest"
           else
             echo "::set-output name=track::$(yq -r .version snap/snapcraft.yaml)"
           fi
