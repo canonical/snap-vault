@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
-      - */stable
+      - '**/stable'
   pull_request:
     branches:
       - master
-      - */stable
+      - '**/stable'
 
 jobs:
   build:
@@ -23,7 +23,6 @@ jobs:
       #   id: build
       
       - name: Get snapcraft track
-      # if: ${{ github.ref_name == 'master' }}
         id: track
         run: |
           if [ "${{ github.ref_name }}" == "master" ]; then
@@ -31,6 +30,9 @@ jobs:
           else
             echo "::set-output name=track::$(yq -r .version snap/snapcraft.yaml)"
           fi
+      
+      - name: Validate snapcraft track
+        run: |
           echo "Track: ${{ steps.track.outputs.track }}"
           
       # - name: publish snap
