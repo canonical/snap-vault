@@ -12,18 +12,19 @@ jobs:
   build:
     name: Build snap
     runs-on: ubuntu-latest
-    outputs:
-      snap: ${{ steps.snapcraft.outputs.snap }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build snap locally
         uses: snapcore/action-build@v1
-        id: snapcraft
+        id: build
 
-      - name: Upload locally built snap artifact
-        uses: actions/upload-artifact@v4
+      - name: publish snap
+        # if: ${{ github.ref_name == 'master' }}
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
         with:
-          name: local-${{ steps.snapcraft.outputs.snap }}
-          path: ${{ steps.snapcraft.outputs.snap }}
+          snap: ${{ steps.build.outputs.snap }}
+          release: latest/edge
