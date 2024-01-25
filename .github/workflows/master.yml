@@ -32,10 +32,6 @@ jobs:
             echo "::set-output name=track::$(yq -r .version snap/snapcraft.yaml)"
           fi
       
-      - name: Validate snapcraft track
-        run: |
-          echo "Track: ${{ steps.track.outputs.track }}"
-          
       - name: publish snap
         if: ${{ github.ref_protected }}
         uses: snapcore/action-publish@v1
