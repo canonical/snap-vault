@@ -1,29 +1,42 @@
-name: Master branch workflow
+name: Protected branch workflow
 
 on:
   push:
     branches:
       - master
+      - '**/stable'
   pull_request:
     branches:
       - master
+      - '**/stable'
 
 jobs:
   build:
     name: Build snap
     runs-on: ubuntu-latest
-    outputs:
-      snap: ${{ steps.snapcraft.outputs.snap }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Build snap locally
         uses: snapcore/action-build@v1
-        id: snapcraft
-
-      - name: Upload locally built snap artifact
-        uses: actions/upload-artifact@v4
+        id: build
+      
+      - name: Get snapcraft track
+        if: ${{ github.ref_protected }}
+        id: track
+        run: |
+          if [ "${{ github.ref_name }}" == "master" ]; then
+            echo "::set-output name=track::master"
+          else
+            echo "::set-output name=track::$(yq -r .version snap/snapcraft.yaml)"
+          fi
+      
+      - name: publish snap
+        if: ${{ github.ref_protected }}
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
         with:
-          name: local-${{ steps.snapcraft.outputs.snap }}
-          path: ${{ steps.snapcraft.outputs.snap }}
+          snap: ${{ steps.build.outputs.snap }}
+          release: ${{ steps.track.outputs.track }}/edge
