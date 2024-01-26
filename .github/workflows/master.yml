@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - master
-      - '**/stable'
+      - 'stable/**'
   pull_request:
     branches:
       - master
-      - '**/stable'
+      - 'stable/**'
   schedule:
     - cron: '0 6 * * 0'
 
