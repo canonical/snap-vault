@@ -30,8 +30,12 @@ jobs:
         run: |
           if [ "${{ github.ref_name }}" == "master" ]; then
             echo "::set-output name=track::latest"
+          elif [[ "${{ github.ref_name }}" =~ ^stable\/(.+) ]]; then
+            TRACK_NAME=${BASH_REMATCH[1]}
+            echo "::set-output name=track::$TRACK_NAME"
           else
-            echo "::set-output name=track::$(yq -r .version snap/snapcraft.yaml)"
+            echo "Branch name does not match expected patterns. Exiting."
+            exit 1
           fi
       
       - name: publish snap
