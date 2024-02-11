@@ -23,7 +23,7 @@ jobs:
       - name: Build snap locally
         uses: snapcore/action-build@v1
         id: build
-      
+
       - name: Get snapcraft track
         if: ${{ github.ref_protected }}
         id: track
@@ -37,7 +37,14 @@ jobs:
             echo "Branch name does not match expected patterns. Exiting."
             exit 1
           fi
-      
+
+      - name: Upload snap artifact
+        id: upload-snap
+        uses: actions/upload-artifact@v4
+        with:
+          name: snap
+          path: ${{ steps.build.outputs.snap }}
+
       - name: publish snap
         if: ${{ github.ref_protected }}
         uses: snapcore/action-publish@v1
@@ -46,3 +53,36 @@ jobs:
         with:
           snap: ${{ steps.build.outputs.snap }}
           release: ${{ steps.track.outputs.track }}/edge
+
+  test-service:
+    name: Test snap service
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download snap artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: snap
+
+      - name: Install snap
+        run: |
+          SNAP_NAME=$(ls *.snap)
+          echo "Installing snap $SNAP_NAME"
+          sudo snap install --dangerous $SNAP_NAME
+
+      - name: Start the vault snap service
+        run: |
+          sudo snap start vault
+          sleep 30
+
+      - name: Test snap service
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y net-tools
+          # Check if a service is listening on port 8200
+          if netstat -tuln | grep ':8200'; then
+            echo "Service is listening on port 8200"
+          else
+            echo "Service is NOT listening on port 8200"
+            exit 1
+          fi
