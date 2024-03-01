@@ -16,6 +16,13 @@ jobs:
     outputs:
       release: ${{steps.check.outputs.release}}
     steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: sudo snap install yq --channel=v4/stable
+
       - id: latest-upstream
         name: Check for latest release tag
         run: |
@@ -23,12 +30,6 @@ jobs:
           cd vault
           RELEASE_TAG="$(git tag -l --sort=version:refname "v1.15.*" | tail -1)"
           echo "::set-output name=release::${RELEASE_TAG}"
-
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Install yq
-        run: sudo snap install yq --channel=v4/stable
 
       - id: check
         name: Check for new releases
@@ -52,6 +53,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+      
+      - name: Set up SSH Key for Signing Commits
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.BOT_PRIVATE_SIGNING_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.BOT_PUBLIC_SIGNING_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 644 ~/.ssh/id_rsa.pub
+          git config --global user.email "telco-engineers@lists.canonical.com"
+          git config --global user.name "telcobot"
+          git config --global user.signingkey ~/.ssh/id_rsa.pub
+          git config --global commit.gpgsign true
+          git config --global gpg.format ssh
 
       - name: Install yq
         run: sudo snap install yq --channel=v4/stable
@@ -69,11 +83,12 @@ jobs:
       - name: Create a PR for local changes
         uses: peter-evans/create-pull-request@v6.0.1
         id: cpr
+
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TELCO_GITHUB_BOT_TOKEN }}
           commit-message: "chore: Bump snap version to ${{ needs.check-upstream.outputs.release }}"
-          committer: "Github Actions <github-actions@github.com>"
-          author: "Github Actions <github-actions@github.com>"
+          committer: "Telcobot <telco-engineers@lists.canonical.com>"
+          author: "Telcobot <telco-engineers@lists.canonical.com>"
           title: "chore: Update to Vault ${{ needs.check-upstream.outputs.release }}"
           body: Automated update to follow upstream [release](https://github.com/hashicorp/vault/releases/tag/${{ needs.check-upstream.outputs.release }}) of Vault ${{ needs.check-upstream.outputs.release }}.
           branch: "chore/bump-version-to-${{ needs.check-upstream.outputs.release }}"
