@@ -8,7 +8,7 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core22
-version: 1.15.4
+version: 1.15.6
 
 grade: stable
 confinement: strict
@@ -33,18 +33,29 @@ apps:
       - network
       - network-bind
 
+architectures:
+  - build-on: [amd64]
+    build-for: [amd64]
+  - build-on: [arm64]
+    build-for: [arm64]
+  - build-on: [armhf]
+    build-for: [armhf]
+  - build-on: [ppc64el]
+    build-for: [ppc64el]
+  - build-on: [s390x]
+    build-for: [s390x]
+
+
 package-repositories:
  - type: apt
    url: https://deb.nodesource.com/node_16.x
    components: [main]
    suites: [focal]
-   key-server: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
    key-id: 9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280
  - type: apt
    url: https://dl.yarnpkg.com/debian/
    components: [main]
    suites: [stable]
-   key-server: https://dl.yarnpkg.com/debian/pubkey.gpg
    key-id: 72ECF46A56B4AD39C907BBB71646B01B86E50310
 
 parts:
@@ -61,6 +72,12 @@ parts:
       - nodejs
       - yarn
     override-build: |
+      # workaround for build.snapcraft.io builds
+      if [ -n "${http_proxy:-}" ]; then
+        echo "httpProxy: ${http_proxy}" >> ui/.yarnrc.yml
+        echo "httpsProxy: ${https_proxy}" >> ui/.yarnrc.yml
+      fi
+
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
           # Build the WebUI assets
@@ -73,4 +90,4 @@ parts:
 
   service-files:
     plugin: dump
-    source: snap/service
+    source: service
