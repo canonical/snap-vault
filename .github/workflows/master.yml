@@ -12,6 +12,10 @@ on:
   schedule:
     - cron: '0 6 * * 0'
 
+concurrency:
+    group: ${{ github.ref == 'refs/heads/master' && format('ignore-master-{0}', github.run_id) || format('{0}-{1}', github.workflow, github.ref_name) }}
+    cancel-in-progress: true
+
 jobs:
   build:
     name: Build snap
