@@ -29,8 +29,8 @@ assignees: ''
 #### Environment
 
 - Snap revision: <!-- e.g. 2182 -->
-- Snap channel: <!-- e.g. 1.15/stable -->
-- Vault version: <!-- e.g. 1.15.4 -->
+- Snap channel: <!-- e.g. 1.16/stable -->
+- Vault version: <!-- e.g. 1.16.0 -->
 - Ubuntu version: <!-- e.g. 22.04 -->
 
 #### Additional context
