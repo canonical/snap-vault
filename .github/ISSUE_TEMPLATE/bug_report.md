@@ -30,7 +30,7 @@ assignees: ''
 
 - Snap revision: <!-- e.g. 2182 -->
 - Snap channel: <!-- e.g. 1.16/stable -->
-- Vault version: <!-- e.g. 1.16.0 -->
+- Vault version: <!-- e.g. 1.16.1 -->
 - Ubuntu version: <!-- e.g. 22.04 -->
 
 #### Additional context
