@@ -9,7 +9,7 @@ description: |
   solution. This is where Vault steps in.
 base: core22
 version: 1.16.1
-
+license: BUSL-1.1
 grade: stable
 confinement: strict
 
