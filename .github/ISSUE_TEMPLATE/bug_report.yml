@@ -1,0 +1,53 @@
+name: Bug Report
+description: File a bug report
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for taking the time to fill out this bug report! Before submitting your issue, please make
+        sure you are using the latest version of the charm. If not, please switch to this image prior to 
+        posting your report to make sure it's not already solved.
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: >
+        If applicable, add screenshots to help explain your problem. If applicable, add screenshots to 
+        help explain the problem you are facing.      
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: To Reproduce
+      description: >
+        Please provide a step-by-step instruction of how to reproduce the behavior.
+      placeholder: |
+        1. `snap install ...`
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: >
+        We need to know a bit more about the context in which you run the snap.
+        - Are you running the snap locally, on public cloud, in multipass or on some other platform?
+        - What track and channel you deployed the snap from (ie. `latest/edge` or similar).
+        - Version of any applicable components.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: >
+        Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
