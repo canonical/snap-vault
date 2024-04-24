@@ -6,7 +6,7 @@ body:
     attributes:
       value: >
         Thanks for taking the time to fill out this bug report! Before submitting your issue, please make
-        sure you are using the latest version of the charm. If not, please switch to this image prior to 
+        sure you are using the latest version of the snap. If not, please switch to this image prior to 
         posting your report to make sure it's not already solved.
   - type: textarea
     id: bug-description
@@ -22,9 +22,11 @@ body:
     attributes:
       label: To Reproduce
       description: >
-        Please provide a step-by-step instruction of how to reproduce the behavior.
+        Please provide a step-by-step instruction of how to reproduce the behavior. Make sure to include
+        snap commands, and any other relevant information.
       placeholder: |
         1. `snap install ...`
+        2. `snap info ...`
     validations:
       required: true
   - type: textarea
@@ -33,9 +35,8 @@ body:
       label: Environment
       description: >
         We need to know a bit more about the context in which you run the snap.
-        - Are you running the snap locally, on public cloud, in multipass or on some other platform?
-        - What track and channel you deployed the snap from (ie. `latest/edge` or similar).
-        - Version of any applicable components.
+        - Are you running snap locally, lxd, Multipass, or on some other platform?
+        - Version of any applicable components, like Multipass, LXD.
     validations:
       required: true
   - type: textarea
@@ -44,6 +45,7 @@ body:
       label: Relevant log output
       description: >
         Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+        Fetch the logs using `snap logs ...`.
       render: shell
     validations:
       required: true
