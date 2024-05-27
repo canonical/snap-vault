@@ -7,7 +7,7 @@ description: |
   is already very difficult and platform-specific. Adding on key rolling,
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
-base: core22
+base: core24
 version: 1.16.2
 license: BUSL-1.1
 grade: stable
