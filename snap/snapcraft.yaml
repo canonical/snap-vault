@@ -48,7 +48,7 @@ architectures:
 
 package-repositories:
  - type: apt
-   url: https://deb.nodesource.com/node_16.x
+   url: https://deb.nodesource.com/node_20.x
    components: [main]
    suites: [focal]
    key-id: 9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280
