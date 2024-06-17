@@ -8,7 +8,7 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core22
-version: 1.16.2
+version: 1.16.3
 license: BUSL-1.1
 grade: stable
 confinement: strict
@@ -67,7 +67,7 @@ parts:
       - vault
       - ui
     build-snaps:
-      - go/1.21/stable
+      - go/1.22/stable
     build-packages:
       - nodejs
       - yarn
