@@ -19,44 +19,20 @@ concurrency:
 jobs:
   build:
     name: Build snap
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v22.0.0
 
-      - name: Build snap locally
-        uses: snapcore/action-build@v1
-        id: build
-
-      - name: Get snapcraft track
-        if: ${{ github.ref_protected }}
-        id: track
-        run: |
-          if [ "${{ github.ref_name }}" == "master" ]; then
-            echo "::set-output name=track::latest"
-          elif [[ "${{ github.ref_name }}" =~ ^stable\/(.+) ]]; then
-            TRACK_NAME=${BASH_REMATCH[1]}
-            echo "::set-output name=track::$TRACK_NAME"
-          else
-            echo "Branch name does not match expected patterns. Exiting."
-            exit 1
-          fi
-
-      - name: Upload snap artifact
-        id: upload-snap
-        uses: actions/upload-artifact@v4
-        with:
-          name: snap
-          path: ${{ steps.build.outputs.snap }}
-
-      - name: publish snap
-        if: ${{ github.ref_protected }}
-        uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        with:
-          snap: ${{ steps.build.outputs.snap }}
-          release: ${{ steps.track.outputs.track }}/edge
+  release:
+    name: Release snap
+    needs:
+      - build
+    uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v22.0.0
+    with:
+      channel: latest/edge
+      artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
+    secrets:
+      snap-store-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+    permissions:
+      contents: write  # Needed to create GitHub release
 
   test-service:
     name: Test snap service
