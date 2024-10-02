@@ -27,7 +27,7 @@ jobs:
       - build
     uses: canonical/data-platform-workflows/.github/workflows/release_snap.yaml@v22.0.0
     with:
-      channel: latest/edge
+      channel: 1.17/edge
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
     secrets:
       snap-store-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
@@ -42,7 +42,7 @@ jobs:
       - name: Download snap artifact
         uses: actions/download-artifact@v4
         with:
-          name: snap
+          name: ${{needs.build.outputs.artifact-prefix}}-amd64
 
       - name: Install snap
         run: |
