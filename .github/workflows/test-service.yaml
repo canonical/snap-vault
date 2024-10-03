@@ -5,14 +5,18 @@ jobs:
   test-service:
     strategy:
       matrix:
-        base: ${{ fromJSON(needs.collect-bases.outputs.bases) }}
+        base:
+          - arch: amd64
+            runner: ubuntu-22.04
+          - arch: arm64
+            runner: Ubuntu_ARM64_4C_16G_02
     name: 'Build snap | ${{ matrix.base.id }}'
     runs-on: ${{ matrix.base.runner }}
     steps:
       - name: Download snap artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{needs.build.outputs.artifact-prefix}}-architecture-amd64
+          name: ${{needs.build.outputs.artifact-prefix}}-architecture-${{ matrix.base.arch }}
 
       - name: Install snap
         run: |
