@@ -1,6 +1,5 @@
 on:
-    # Manual trigger
-    workflow_dispatch:
+    workflow_call:
 
 jobs:
   test-service:
@@ -13,7 +12,7 @@ jobs:
       - name: Download snap artifact
         uses: actions/download-artifact@v4
         with:
-        name: ${{needs.build.outputs.artifact-prefix}}-architecture-amd64
+          name: ${{needs.build.outputs.artifact-prefix}}-architecture-amd64
 
       - name: Install snap
         run: |
