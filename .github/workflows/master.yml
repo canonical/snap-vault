@@ -21,7 +21,13 @@ jobs:
     name: Build snap
     uses: canonical/data-platform-workflows/.github/workflows/build_snap.yaml@v22.0.0
 
+  test:
+    name: Test Vaultd service
+    needs: build
+    uses: ./.github/workflows/test-service.yaml
+  
   release:
+    if: ${{ github.ref_protected }}
     name: Release snap
     needs:
       - build
@@ -33,36 +39,3 @@ jobs:
       snap-store-token: ${{ secrets.SNAP_STORE_TOKEN }}
     permissions:
       contents: write  # Needed to create GitHub release
-
-  test-service:
-    name: Test snap service
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download snap artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{needs.build.outputs.artifact-prefix}}-amd64
-
-      - name: Install snap
-        run: |
-          SNAP_NAME=$(ls *.snap)
-          echo "Installing snap $SNAP_NAME"
-          sudo snap install --dangerous $SNAP_NAME
-
-      - name: Start the vault snap service
-        run: |
-          sudo snap start vault
-          sleep 30
-
-      - name: Test snap service
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y net-tools
-          # Check if a service is listening on port 8200
-          if netstat -tuln | grep ':8200'; then
-            echo "Service is listening on port 8200"
-          else
-            echo "Service is NOT listening on port 8200"
-            exit 1
-          fi
