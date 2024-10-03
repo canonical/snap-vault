@@ -30,7 +30,7 @@ jobs:
       channel: 1.17/edge
       artifact-prefix: ${{ needs.build.outputs.artifact-prefix }}
     secrets:
-      snap-store-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+      snap-store-token: ${{ secrets.SNAP_STORE_TOKEN }}
     permissions:
       contents: write  # Needed to create GitHub release
 
