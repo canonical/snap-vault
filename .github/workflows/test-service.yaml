@@ -16,7 +16,7 @@ jobs:
       - name: Download snap artifact
         uses: actions/download-artifact@v4
         with:
-          name: ${{needs.build.outputs.artifact-prefix}}-architecture-${{ matrix.base.arch }}
+          name: packed-snap-architecture-${{ matrix.base.arch }}
 
       - name: Install snap
         run: |
