@@ -67,7 +67,7 @@ parts:
       - vault
       - ui
     build-snaps:
-      - go/1.22/stable
+      - go/1.23/stable
     build-packages:
       - nodejs
       - yarn
