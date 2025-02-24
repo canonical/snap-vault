@@ -1,0 +1,31 @@
+name: Issues to JIRA
+
+on:
+  issues:
+    types: [opened, reopened, closed]
+
+jobs:
+  update:
+    name: Update Issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create JIRA ticket
+        env:
+           ISSUE_TITLE: ${{ github.event.issue.title }}
+           ISSUE_DESCRIPTION: ${{ github.event.issue.body }}
+        run: |
+          if ${{ contains(github.event.*.labels.*.name, 'Bug') }}; then
+            type=bug
+          else
+            type=story
+          fi
+          data=$( jq -n \
+                  --arg title "$ISSUE_TITLE" \
+                  --arg url '${{ github.event.issue.html_url }}' \
+                  --arg submitter '${{ github.event.issue.user.login }}' \
+                  --arg body "" \
+                  --arg type "$type" \
+                  --arg action '${{ github.event.action }}' \
+                  '{title: $title, url: $url, submitter: $submitter, body: $body, type: $type, action: $action}' )
+
+          curl -X POST -H 'Content-type: application/json' --data "${data}" "${{ secrets.JIRA_URL }}"
