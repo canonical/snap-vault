@@ -8,7 +8,7 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core22
-version: 1.18.4
+version: 1.18.5
 license: BUSL-1.1
 grade: stable
 confinement: strict
