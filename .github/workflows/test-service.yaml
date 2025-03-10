@@ -1,0 +1,42 @@
+on:
+    workflow_call:
+
+jobs:
+  test-service:
+    strategy:
+      matrix:
+        base:
+          - arch: amd64
+            runner: ubuntu-22.04
+          - arch: arm64
+            runner: Ubuntu_ARM64_4C_16G_02
+    name: 'Build snap | ${{ matrix.base.id }}'
+    runs-on: ${{ matrix.base.runner }}
+    steps:
+      - name: Download snap artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: packed-snap-architecture-${{ matrix.base.arch }}
+
+      - name: Install snap
+        run: |
+          SNAP_NAME=$(ls *.snap)
+          echo "Installing snap $SNAP_NAME"
+          sudo snap install --dangerous $SNAP_NAME
+
+      - name: Start the vault snap service
+        run: |
+          sudo snap start vault
+          sleep 30
+
+      - name: Test snap service
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y net-tools
+          # Check if a service is listening on port 8200
+          if netstat -tuln | grep ':8200'; then
+              echo "Service is listening on port 8200"
+          else
+              echo "Service is NOT listening on port 8200"
+              exit 1
+          fi
