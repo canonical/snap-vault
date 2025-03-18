@@ -28,7 +28,7 @@ jobs:
         run: |
           git clone https://github.com/hashicorp/vault
           cd vault
-          RELEASE_TAG="$(git tag -l --sort=version:refname "v1.18.*" | tail -1)"
+          RELEASE_TAG="$(git tag -l --sort=version:refname "v1.19.*" | tail -1)"
           echo "::set-output name=release::${RELEASE_TAG}"
 
       - id: check
