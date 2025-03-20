@@ -7,7 +7,7 @@ description: |
   is already very difficult and platform-specific. Adding on key rolling,
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
-base: core22
+base: core24
 version: 1.18.5
 license: BUSL-1.1
 grade: stable
@@ -33,18 +33,12 @@ apps:
       - network
       - network-bind
 
-architectures:
-  - build-on: [amd64]
-    build-for: [amd64]
-  - build-on: [arm64]
-    build-for: [arm64]
-  - build-on: [armhf]
-    build-for: [armhf]
-  - build-on: [ppc64el]
-    build-for: [ppc64el]
-  - build-on: [s390x]
-    build-for: [s390x]
-
+platforms:
+  amd64:
+  arm64:
+  armhf:
+  ppc64el:
+  s390x:
 
 package-repositories:
  - type: apt
