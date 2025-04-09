@@ -1,0 +1,13 @@
+name: Identify KEVs
+
+on:
+  schedule:
+    - cron: "0 3 * * *"  # Run daily at 03:00 UTC
+  workflow_dispatch:
+
+
+jobs:
+  identify-kevs:
+    uses: canonical/identity-credentials-workflows/.github/workflows/identify-kevs.yaml@v0
+    with:
+      checkout_ref: v0
