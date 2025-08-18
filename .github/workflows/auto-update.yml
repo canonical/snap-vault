@@ -18,7 +18,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install yq
         run: sudo snap install yq --channel=v4/stable
@@ -52,7 +52,7 @@ jobs:
     if: ${{ needs.check-upstream.outputs.release != '' }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       
       - name: Set up SSH Key for Signing Commits
         run: |
