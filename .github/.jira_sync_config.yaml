@@ -1,0 +1,9 @@
+# From https://github.com/canonical/gh-jira-sync-bot#client-side-configuration
+settings:
+  jira_project_key: "TLSENG"
+  status_mapping:
+    opened: Untriaged
+    closed: done
+  label_mapping:
+    enhancement: Story
+    bug: Bug
