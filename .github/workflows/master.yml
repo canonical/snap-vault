@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload snap artifact
         id: upload-snap
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: snap
           path: ${{ steps.build.outputs.snap }}
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download snap artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: snap
 
