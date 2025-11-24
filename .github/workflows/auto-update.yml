@@ -18,7 +18,7 @@ jobs:
     steps:
 
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install yq
         run: sudo snap install yq --channel=v4/stable
@@ -52,7 +52,7 @@ jobs:
     if: ${{ needs.check-upstream.outputs.release != '' }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       
       - name: Set up SSH Key for Signing Commits
         run: |
@@ -81,7 +81,7 @@ jobs:
           sed -i "s/^version: $CURRENT/version: ${LATEST/v/}/g" snap/snapcraft.yaml
 
       - name: Create a PR for local changes
-        uses: peter-evans/create-pull-request@v7.0.8
+        uses: peter-evans/create-pull-request@v7.0.9
         id: cpr
 
         with:
