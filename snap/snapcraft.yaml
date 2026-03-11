@@ -50,7 +50,7 @@ package-repositories:
    url: https://dl.yarnpkg.com/debian/
    components: [main]
    suites: [stable]
-   key-id: 72ECF46A56B4AD39C907BBB71646B01B86E50310
+   key-id: FF7CB5667B542092084BBDC562D54FD4003F6525
 
 parts:
   vault:
