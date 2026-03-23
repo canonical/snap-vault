@@ -8,6 +8,6 @@ on:
 
 jobs:
   identify-kevs:
-    uses: canonical/identity-credentials-workflows/.github/workflows/identify-kevs.yaml@v0
+    uses: canonical/identity-credentials-workflows/.github/workflows/identify-kevs.yaml@v1
     with:
       checkout_ref: v0

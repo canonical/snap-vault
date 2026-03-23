@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Build snap locally
         uses: snapcore/action-build@v1
@@ -44,7 +44,7 @@ jobs:
 
       - name: Upload snap artifact
         id: upload-snap
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: snap-amd64
           path: ${{ steps.build.outputs.snap }}
@@ -63,7 +63,7 @@ jobs:
     runs-on: [self-hosted, linux, ARM64, medium, noble]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup LXD
         uses: canonical/setup-lxd@main
@@ -96,7 +96,7 @@ jobs:
 
       - name: Upload snap artifact
         id: upload-snap
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: snap-arm64
           path: "*.snap"
@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download snap artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: snap-amd64
 
@@ -149,7 +149,7 @@ jobs:
     runs-on: [self-hosted, linux, ARM64, medium, noble]
     steps:
       - name: Download snap artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: snap-arm64
 
