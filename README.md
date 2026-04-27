@@ -19,16 +19,80 @@ distributions.</p>
 
 ## Usage
 
-### Service
+### Client
 
-Edit the configuration file at `/var/snap/vault/common/vault.hcl` and start the service with:
+The snap provides the `vault` CLI client:
+
+```shell
+export VAULT_ADDR="http://127.0.0.1:8200"
+vault status
+```
+
+### Running a local Vault server
+
+The snap also includes a `vaultd` daemon for running a local Vault server. It is
+disabled by default and will not start automatically on install.
+
+The daemon uses the configuration at `/var/snap/vault/common/vault.hcl`, which is
+populated with a default config on first install (see [Configuration](#configuration)).
+Modify that file as needed, then start the daemon:
 
 ```shell
 sudo snap start vault.vaultd
 ```
 
-### Client
+To stop or restart the daemon:
 
 ```shell
-vault status
+sudo snap stop vault.vaultd
+sudo snap restart vault.vaultd
 ```
+
+The daemon supports reload (SIGHUP) to pick up configuration changes without a full restart:
+
+```shell
+sudo snap restart --reload vault.vaultd
+```
+
+Refer to the [Vault operator commands](https://developer.hashicorp.com/vault/docs/commands/operator)
+documentation for initialisation and other operations once the server is running.
+
+## Configuration
+
+The default `vault.hcl` at `/var/snap/vault/common/vault.hcl`:
+
+```hcl
+ui = true
+
+disable_mlock = true
+
+storage "file" {
+  path = "/var/snap/vault/common/data"
+}
+
+# HTTP listener
+listener "tcp" {
+  address     = "0.0.0.0:8200"
+  tls_disable = 1
+}
+```
+
+| Option           | Description                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| `ui`             | Enables the built-in web UI at `http://<host>:8200/ui`                                        |
+| `disable_mlock`  | Stops Vault from executing the `mlock` syscall, which prevents data swaps from memory to disk |
+| `storage "file"` | Stores Vault's data on disk at `/var/snap/vault/common/data`.                                 |
+| `listener "tcp"` | Listens on all interfaces on port 8200, with TLS disabled by default                          |
+
+For advanced configuration options, refer to the [Vault configuration documentation](https://developer.hashicorp.com/vault/docs/configuration).
+
+### Environment variables
+
+Environment variables can be set in `/var/snap/vault/common/vault.env` and will be sourced
+before Vault starts.
+
+## Further reading
+
+- [Vault documentation](https://developer.hashicorp.com/vault/docs)
+- [Vault configuration](https://developer.hashicorp.com/vault/docs/configuration)
+- [Vault operator commands](https://developer.hashicorp.com/vault/docs/commands/operator)
