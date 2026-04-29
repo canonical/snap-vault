@@ -86,6 +86,28 @@ listener "tcp" {
 
 For advanced configuration options, refer to the [Vault configuration documentation](https://developer.hashicorp.com/vault/docs/configuration).
 
+### Enabling TLS
+
+To run Vault over HTTPS, replace `tls_disable = 1` in `vault.hcl` with the paths
+to your certificate and key:
+
+```hcl
+listener "tcp" {
+  address       = "0.0.0.0:8200"
+  tls_cert_file = "/var/snap/vault/common/tls/vault.crt"
+  tls_key_file  = "/var/snap/vault/common/tls/vault.key"
+}
+```
+
+Then set `VAULT_ADDR` accordingly:
+
+```shell
+export VAULT_ADDR="https://127.0.0.1:8200"
+```
+
+See the [TCP listener documentation](https://developer.hashicorp.com/vault/docs/configuration/listener/tcp)
+for the full list of TLS options.
+
 ### Environment variables
 
 Environment variables can be set in `/var/snap/vault/common/vault.env` and will be sourced
