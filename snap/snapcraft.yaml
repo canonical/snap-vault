@@ -8,7 +8,7 @@ description: |
   secure storage, and detailed audit logs is almost impossible without a custom
   solution. This is where Vault steps in.
 base: core24
-version: 1.20.2
+version: 2.0.0
 license: BUSL-1.1
 grade: stable
 confinement: strict
@@ -46,11 +46,6 @@ package-repositories:
    components: [main]
    suites: [nodistro]
    key-id: 6F71F525282841EEDAF851B42F59B5F99B1BE0B4
- - type: apt
-   url: https://dl.yarnpkg.com/debian/
-   components: [main]
-   suites: [stable]
-   key-id: FF7CB5667B542092084BBDC562D54FD4003F6525
 
 parts:
   vault:
@@ -61,16 +56,19 @@ parts:
       - vault
       - ui
     build-snaps:
-      - go/1.23/stable
+      - go/1.26/stable
     build-packages:
       - nodejs
-      - yarn
     override-build: |
       # workaround for build.snapcraft.io builds
       if [ -n "${http_proxy:-}" ]; then
-        echo "httpProxy: ${http_proxy}" >> ui/.yarnrc.yml
-        echo "httpsProxy: ${https_proxy}" >> ui/.yarnrc.yml
+        npm config set proxy "${http_proxy}"
+        npm config set https-proxy "${https_proxy}"
       fi
+
+      # Install pnpm (required by Vault 2.x UI build) and yarn (required by
+      # git-hosted dependency prepare scripts)
+      npm install -g pnpm yarn
 
       DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
