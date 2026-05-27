@@ -113,6 +113,16 @@ for the full list of TLS options.
 Environment variables can be set in `/var/snap/vault/common/vault.env` and will be sourced
 before Vault starts.
 
+## Platforms
+
+The snap is published for the following architectures: `amd64`, `arm64`,
+and `s390x`.
+
+The built-in web UI is included only on `amd64` and `arm64`. On `s390x`,
+Node.js is not available for building the frontend assets, so Vault is
+compiled without the `ui` build tag. The `ui = true` option in `vault.hcl`
+will have no effect on that platform.
+
 ## Further reading
 
 - [Vault documentation](https://developer.hashicorp.com/vault/docs)
