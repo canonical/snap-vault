@@ -54,26 +54,29 @@ parts:
     plugin: go
     go-buildtags:
       - vault
-      - ui
     build-snaps:
       - go/1.26/stable
     build-packages:
-      - nodejs
+      - on amd64:
+        - nodejs
+      - on arm64:
+        - nodejs
     override-build: |
-      # workaround for build.snapcraft.io builds
-      if [ -n "${http_proxy:-}" ]; then
-        npm config set proxy "${http_proxy}"
-        npm config set https-proxy "${https_proxy}"
-      fi
-
-      # Install pnpm (required by Vault 2.x UI build) and yarn (required by
-      # git-hosted dependency prepare scripts)
-      npm install -g pnpm yarn
-
-      DEB_TARGET_ARCH=`dpkg-architecture -qDEB_TARGET_ARCH`
+      DEB_TARGET_ARCH=$(dpkg-architecture -qDEB_TARGET_ARCH)
       if [ "$DEB_TARGET_ARCH" = "amd64" ] || [ "$DEB_TARGET_ARCH" = "arm64" ]; then
+          # workaround for build.snapcraft.io builds
+          if [ -n "${http_proxy:-}" ]; then
+            npm config set proxy "${http_proxy}"
+            npm config set https-proxy "${https_proxy}"
+          fi
+
+          # Install pnpm (required by Vault 2.x UI build) and yarn (required by
+          # git-hosted dependency prepare scripts)
+          npm install -g pnpm yarn
+
           # Build the WebUI assets
           make static-dist
+          export GOFLAGS="${GOFLAGS:-} -tags=vault,ui"
       fi
       # Complete the main go build
       craftctl default
