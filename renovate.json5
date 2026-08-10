@@ -1,0 +1,31 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "github>canonical/identity-credentials-workflows//renovate.json5#v3.1.3",
+  ],
+  // Override the shared enabledManagers: this repo has no Python or
+  // Terraform to manage, but needs a custom manager to track the upstream
+  // HashiCorp Vault release used to build the snap.
+  enabledManagers: ["github-actions", "custom.regex"],
+  customManagers: [
+    {
+      customType: "regex",
+      managerFilePatterns: ["/^snap/snapcraft\\.yaml$/"],
+      matchStrings: ["version:\\s*(?<currentValue>[\\d.]+)\\n"],
+      depNameTemplate: "hashicorp/vault",
+      datasourceTemplate: "github-tags",
+      extractVersionTemplate: "^v(?<version>.*)$",
+    },
+  ],
+  packageRules: [
+    {
+      matchDatasources: ["github-tags"],
+      matchDepNames: ["hashicorp/vault"],
+      // Only track patch releases of the currently packaged major.minor,
+      // matching the previous auto-update.yml behavior.
+      allowedVersions: "/^2\\.0\\.\\d+$/",
+      groupName: "Vault upstream version",
+      commitMessageTopic: "Vault",
+    },
+  ],
+}
